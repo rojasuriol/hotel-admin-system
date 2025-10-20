@@ -28,7 +28,7 @@ public class HabitacionServiceImpl implements HabitacionService {
     public HabitacionResponseDTO obtenerPorId(Integer id) {
         return repository.findById(id)
                 .map(mapper::toDTO)
-                .orElseThrow(() -> new RuntimeException("Hotel no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Habitacion no encontrado"));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class HabitacionServiceImpl implements HabitacionService {
     @Override
     public HabitacionResponseDTO actualizar(Integer id, HabitacionRequestDTO dto) {
         Habitacion habitacion = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Hotel no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Habitacion no encontrado"));
 
         habitacion.setIdHotel(dto.getIdHotel());
         habitacion.setNumeroHabitacion(dto.getNumeroHabitacion());
