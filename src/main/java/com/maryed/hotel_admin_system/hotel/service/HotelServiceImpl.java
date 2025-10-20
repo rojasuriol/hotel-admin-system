@@ -1,5 +1,6 @@
 package com.maryed.hotel_admin_system.hotel.service;
 
+import com.maryed.hotel_admin_system.exception.HotelServiceException;
 import com.maryed.hotel_admin_system.hotel.dao.HotelDAO;
 import com.maryed.hotel_admin_system.hotel.dto.HotelRequestDTO;
 import com.maryed.hotel_admin_system.hotel.dto.HotelResponseDTO;
@@ -19,6 +20,8 @@ public class HotelServiceImpl implements HotelService{
 
     @Override
     public List<HotelResponseDTO> listar() {
+
+
         return repository.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
     }
 
@@ -26,7 +29,7 @@ public class HotelServiceImpl implements HotelService{
     public HotelResponseDTO obtenerPorId(Integer id) {
         return repository.findById(id)
                 .map(mapper::toDTO)
-                .orElseThrow(() -> new RuntimeException("Hotel no encontrado"));
+                .orElseThrow(() -> new HotelServiceException("Hotel no encontrado"));
     }
 
     @Override
@@ -38,7 +41,7 @@ public class HotelServiceImpl implements HotelService{
     @Override
     public HotelResponseDTO actualizar(Integer id, HotelRequestDTO dto) {
         Hotel hotel = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Hotel no encontrado"));
+                .orElseThrow(() -> new HotelServiceException("Hotel no encontrado"));
 
         hotel.setNombreHotel(dto.getNombreHotel());
         hotel.setDireccion(dto.getDireccion());

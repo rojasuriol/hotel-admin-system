@@ -7,6 +7,7 @@ import com.maryed.hotel_admin_system.habitacion.dto.HabitacionResponseDTO;
 import com.maryed.hotel_admin_system.habitacion.service.HabitacionService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.connector.Response;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,6 @@ public class ClienteConsultasController {
 
     @GetMapping("/dni/{dni_cliente}")
     public ClienteResponseDTO obtenerPorDni(@PathVariable(value = "dni_cliente") String dni) {
-        return service.obtenerPorDni(dni);
+        return  service.obtenerPorDni(dni);
     }
 }

@@ -5,6 +5,7 @@ import com.maryed.hotel_admin_system.cliente.dto.ClientelRequestDTO;
 import com.maryed.hotel_admin_system.cliente.dto.ClienteResponseDTO;
 import com.maryed.hotel_admin_system.cliente.mapper.ClienteMapper;
 import com.maryed.hotel_admin_system.cliente.model.Cliente;
+import com.maryed.hotel_admin_system.exception.ClienteServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,14 +36,15 @@ public class ClienteServiceImpl implements ClienteService {
     public ClienteResponseDTO obtenerPorId(Integer id) {
         return repository.findById(id)
                 .map(mapper::toDTO)
-                .orElseThrow(() -> new RuntimeException("cliente no encontrado con id: " + id));
+                .orElseThrow(() -> new ClienteServiceException("Cliente no encontrado con id: " + id));
+
     }
 
     @Override
     public ClienteResponseDTO obtenerPorDni(String dni) {
         return repository.findByDni(dni)
                 .map(mapper::toDTO)
-                .orElseThrow(() -> new RuntimeException("cliente no encontrado con DNI: ".concat(dni)));
+                .orElseThrow(() -> new ClienteServiceException("cliente no encontrado con DNI: ".concat(dni)));
     }
 
     @Override
@@ -54,7 +56,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public ClienteResponseDTO actualizar(Integer id, ClientelRequestDTO dto) {
         Cliente cliente = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("cliente no encontrado"));
+                .orElseThrow(() -> new ClienteServiceException("cliente no encontrado el id: " + id));
 
         cliente.setIdCliente(cliente.getIdCliente());
         cliente.setNombre(dto.getNombre());
