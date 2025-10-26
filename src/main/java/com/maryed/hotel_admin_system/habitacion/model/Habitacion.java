@@ -1,5 +1,6 @@
 package com.maryed.hotel_admin_system.habitacion.model;
 
+import com.maryed.hotel_admin_system.hotel.model.Hotel;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,8 +20,9 @@ public class Habitacion {
     @Column(name = "id_habitacion")
     private Integer idHabitacion;
 
-    @Column(name = "id_hotel")
-    private Integer idHotel;
+    @ManyToOne
+    @JoinColumn(name = "id_hotel", nullable = false)
+    private Hotel hotel;
 
     @Column(name = "numero_habitacion")
     private String numeroHabitacion;

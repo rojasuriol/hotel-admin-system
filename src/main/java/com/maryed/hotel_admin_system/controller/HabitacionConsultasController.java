@@ -18,9 +18,9 @@ import java.util.List;
 public class HabitacionConsultasController {
     private final HabitacionService service;
 
-    @GetMapping("/habitaciones")
-    public List<HabitacionResponseDTO> listar() {
-        return service.listar();
+    @GetMapping("/habitaciones/{id_hotel}")
+    public List<HabitacionResponseDTO> listar(@PathVariable (required = false, value = "id_hotel") Integer idHotel) {
+        return service.listar(idHotel);
     }
 
     @GetMapping("/{id}")

@@ -1,5 +1,6 @@
 package com.maryed.hotel_admin_system.habitacion.dto;
 
+import com.maryed.hotel_admin_system.hotel.model.Hotel;
 import jakarta.persistence.Column;
 import lombok.*;
 

@@ -1,6 +1,7 @@
 package com.maryed.hotel_admin_system.habitacion.service;
 
 
+import com.maryed.hotel_admin_system.exception.HabitacionServiceException;
 import com.maryed.hotel_admin_system.habitacion.dao.HabitacionDAO;
 import com.maryed.hotel_admin_system.habitacion.dto.HabitacionRequestDTO;
 import com.maryed.hotel_admin_system.habitacion.dto.HabitacionResponseDTO;
@@ -20,15 +21,31 @@ public class HabitacionServiceImpl implements HabitacionService {
     private final HabitacionMapper mapper;
 
     @Override
-    public List<HabitacionResponseDTO> listar() {
-        return repository.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
+    public List<HabitacionResponseDTO> listar(Integer idHotel) {
+        List<Habitacion> habitaciones;
+
+        if (idHotel != null) {
+            habitaciones = repository.findByHotelIdHotel(idHotel);
+            if (habitaciones.isEmpty()) {
+                throw new HabitacionServiceException("No existen habitaciones registradas para el hotel con ID " + idHotel);
+            }
+        } else {
+            habitaciones = repository.findAll();
+            if (habitaciones.isEmpty()) {
+                throw new HabitacionServiceException("No existen habitaciones registradas en el sistema.");
+            }
+        }
+
+        return habitaciones.stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     public HabitacionResponseDTO obtenerPorId(Integer id) {
         return repository.findById(id)
                 .map(mapper::toDTO)
-                .orElseThrow(() -> new RuntimeException("Habitacion no encontrado"));
+                .orElseThrow(() -> new HabitacionServiceException("Habitacion no encontrado"));
     }
 
     @Override
@@ -40,9 +57,9 @@ public class HabitacionServiceImpl implements HabitacionService {
     @Override
     public HabitacionResponseDTO actualizar(Integer id, HabitacionRequestDTO dto) {
         Habitacion habitacion = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Habitacion no encontrado"));
+                .orElseThrow(() -> new HabitacionServiceException("Habitacion no encontrado"));
 
-        habitacion.setIdHotel(dto.getIdHotel());
+       // habitacion.setHotel(dto.getIdHotel());
         habitacion.setNumeroHabitacion(dto.getNumeroHabitacion());
         habitacion.setTipoHabitacion(dto.getTipoHabitacion());
         habitacion.setDescripcionHabitacion(dto.getDescripcionHabitacion());
