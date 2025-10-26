@@ -6,6 +6,7 @@ import com.maryed.hotel_admin_system.hotel.model.Hotel;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -15,21 +16,14 @@ import java.time.LocalTime;
 @Builder
 public class ReservaRequestDTO {
 
-    private Integer idReserva;
+    private Integer idCliente;
+    private Integer idHabitacion;
+    private Integer idHotel;
+    private LocalDateTime fechaEntrada;
+    private LocalDateTime fechaSalida;
+    private String tipoReserva;
+    private Double montoTotal;
+    private String DNICliente;
+    private String estado;  // D = DISPONIBLE , O = OCUPADO  y M = MANTENIMIENTO
 
-    private Cliente cliente;
-
-    private Habitacion habitacion;
-
-    private Hotel hotel;
-
-    private LocalDate fechaReserva;
-
-    private LocalTime horaInicio;
-
-    private LocalTime horaFin;
-
-    private LocalTime tiempoReservado;
-
-    private String estado;
 }

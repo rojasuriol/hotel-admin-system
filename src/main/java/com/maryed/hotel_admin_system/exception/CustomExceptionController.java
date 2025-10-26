@@ -50,4 +50,16 @@ public class CustomExceptionController {
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(ReservaServiceException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Map<String, Object>> handleReservaException(ReservaServiceException e) {
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.NOT_FOUND.value());
+        body.put("error", "Error en entidad Reserva");
+        body.put("message", e.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
 }

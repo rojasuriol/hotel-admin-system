@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -19,33 +20,34 @@ import java.time.LocalTime;
 public class Reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idReserva")
+    @Column(name = "id_reserva")
     private Integer idReserva;
 
-    @ManyToOne
-    @JoinColumn(name = "idCliente")
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente", nullable = true)
     private Cliente cliente;
 
-    @ManyToOne
-    @JoinColumn(name = "idHabitacion")
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "id_habitacion", referencedColumnName = "id_habitacion", nullable = true)
     private Habitacion habitacion;
 
-    @ManyToOne
-    @JoinColumn(name = "idHotel")
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "id_hotel", referencedColumnName = "id_hotel", nullable = true)
     private Hotel hotel;
 
-    @Column(name = "fechaReserva")
-    private LocalDate fechaReserva;
 
-    @Column(name = "horaInicio")
-    private LocalTime horaInicio;
+    @Column(name = "fecha_entrada", nullable = false)
+    private LocalDateTime fechaEntrada;
 
-    @Column(name = "horaFin")
-    private LocalTime horaFin;
+    @Column(name = "fecha_salida")
+    private LocalDateTime fechaSalida;
 
-    @Column(name = "tiempoReservado")
-    private LocalTime tiempoReservado;
+    @Column(name = "tipo_reserva")
+    private String tipoReserva; // "POR_HORAS" o "POR_DIAS"
 
-    @Column(name = "estado")
-    private String estado;
+    @Column(name = "monto_total")
+    private Double montoTotal;
+
+    @Column(name = "estado_reserva")
+    private String estado; // "ACTIVA", "FINALIZADA", "CANCELADA"
 }

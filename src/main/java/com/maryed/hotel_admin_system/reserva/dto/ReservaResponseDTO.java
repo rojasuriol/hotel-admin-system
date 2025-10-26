@@ -1,11 +1,15 @@
 package com.maryed.hotel_admin_system.reserva.dto;
 
+import com.maryed.hotel_admin_system.cliente.dto.ClienteResponseDTO;
 import com.maryed.hotel_admin_system.cliente.model.Cliente;
+import com.maryed.hotel_admin_system.habitacion.dto.HabitacionResponseDTO;
 import com.maryed.hotel_admin_system.habitacion.model.Habitacion;
+import com.maryed.hotel_admin_system.hotel.dto.HotelResponseDTO;
 import com.maryed.hotel_admin_system.hotel.model.Hotel;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -16,20 +20,12 @@ import java.time.LocalTime;
 public class ReservaResponseDTO {
 
     private Integer idReserva;
-
-    private Cliente cliente;
-
-    private Habitacion habitacion;
-
-    private Hotel hotel;
-
-    private LocalDate fechaReserva;
-
-    private LocalTime horaInicio;
-
-    private LocalTime horaFin;
-
-    private LocalTime tiempoReservado;
-
-    private String estado;
+    private ClienteResponseDTO cliente;
+    private HabitacionResponseDTO habitacion;
+    private HotelResponseDTO hotel;
+    private LocalDateTime fechaEntrada;
+    private LocalDateTime fechaSalida;
+    private String tipoReserva;
+    private Double montoTotal;
+    private String estadoReserva;
 }
