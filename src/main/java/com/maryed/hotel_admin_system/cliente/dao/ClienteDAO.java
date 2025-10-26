@@ -11,5 +11,4 @@ import java.util.Optional;
 public interface ClienteDAO extends JpaRepository<Cliente, Integer> {
 
     Optional<Cliente> findByDni(String dni);
-    List<Cliente> findByTipoCliente(String tipoCliente);
 }

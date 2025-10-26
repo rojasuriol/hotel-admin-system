@@ -18,7 +18,7 @@ public class HotelModificacionesController {
     @PostMapping("/registrar")
     public ResponseEntity<String> registrar(@RequestBody HotelRequestDTO dto) {
         HotelResponseDTO hotelCreado = service.registrar(dto);
-        URI ubicacion = URI.create("/hoteles/" + hotelCreado.getIdHotel());
+        URI ubicacion = URI.create("/hoteles/registrar" + hotelCreado.getIdHotel());
         return ResponseEntity.created(ubicacion).body("Hotel creado con exito. ");
     }
 
@@ -36,6 +36,6 @@ public class HotelModificacionesController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable Integer id) {
         service.eliminar(id);
-        return ResponseEntity.ok("Habitación eliminada correctamente.");
+        return ResponseEntity.ok("Hotel eliminada correctamente.");
     }
 }

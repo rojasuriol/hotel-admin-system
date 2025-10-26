@@ -1,5 +1,6 @@
 package com.maryed.hotel_admin_system.hotel.service;
 
+import com.maryed.hotel_admin_system.exception.HabitacionServiceException;
 import com.maryed.hotel_admin_system.exception.HotelServiceException;
 import com.maryed.hotel_admin_system.hotel.dao.HotelDAO;
 import com.maryed.hotel_admin_system.hotel.dto.HotelRequestDTO;
@@ -14,15 +15,20 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class HotelServiceImpl implements HotelService{
+public class HotelServiceImpl implements HotelService {
     private final HotelDAO repository;
     private final HotelMapper mapper;
 
     @Override
     public List<HotelResponseDTO> listar() {
-
-
-        return repository.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
+        List<Hotel> hotels;
+        hotels = repository.findAll();
+        if (hotels.isEmpty()) {
+            throw new HabitacionServiceException("No existen hoteles registradas en el sistema.");
+        }
+        return hotels.stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
