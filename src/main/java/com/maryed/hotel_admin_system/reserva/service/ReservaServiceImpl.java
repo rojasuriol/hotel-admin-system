@@ -106,7 +106,6 @@ public class ReservaServiceImpl implements ReservaService {
     public void eliminar(Integer id) {
         Reserva reserva = repository.findById(id)
                 .orElseThrow(() -> new ReservaServiceException("Reserva no encontrada"));
-
         reserva.setEstado("C");
         repository.save(reserva);
     }

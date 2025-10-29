@@ -24,7 +24,7 @@ public class HotelServiceImpl implements HotelService {
         List<Hotel> hotels;
         hotels = repository.findAll();
         if (hotels.isEmpty()) {
-            throw new HabitacionServiceException("No existen hoteles registradas en el sistema.");
+            throw new HotelServiceException("No existen hoteles registradas en el sistema.");
         }
         return hotels.stream()
                 .map(mapper::toDTO)
@@ -59,6 +59,9 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public void eliminar(Integer id) {
+        if (!repository.existsById(id)) {
+            throw new HotelServiceException("Hotel no encontrado para eliminar");
+        }
         repository.deleteById(id);
     }
 }

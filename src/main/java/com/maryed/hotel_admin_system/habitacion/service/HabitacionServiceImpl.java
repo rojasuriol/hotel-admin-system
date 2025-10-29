@@ -2,6 +2,7 @@ package com.maryed.hotel_admin_system.habitacion.service;
 
 
 import com.maryed.hotel_admin_system.exception.HabitacionServiceException;
+import com.maryed.hotel_admin_system.exception.HotelServiceException;
 import com.maryed.hotel_admin_system.habitacion.dao.HabitacionDAO;
 import com.maryed.hotel_admin_system.habitacion.dto.HabitacionRequestDTO;
 import com.maryed.hotel_admin_system.habitacion.dto.HabitacionResponseDTO;
@@ -70,6 +71,9 @@ public class HabitacionServiceImpl implements HabitacionService {
 
     @Override
     public void eliminar(Integer id) {
+        if (!repository.existsById(id)) {
+            throw new HabitacionServiceException("Habitacion no encontrada para eliminar");
+        }
         repository.deleteById(id);
     }
 }

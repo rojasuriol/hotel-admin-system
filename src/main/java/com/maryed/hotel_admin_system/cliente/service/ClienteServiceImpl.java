@@ -83,6 +83,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void eliminar(Integer id) {
+        if (!repository.existsById(id)) {
+            throw new ClienteServiceException("cliente no encontrado para eliminar");
+        }
         repository.deleteById(id);
     }
 }

@@ -35,7 +35,6 @@ public class Reserva {
     @JoinColumn(name = "id_hotel", referencedColumnName = "id_hotel", nullable = true)
     private Hotel hotel;
 
-
     @Column(name = "fecha_entrada", nullable = false)
     private LocalDateTime fechaEntrada;
 
