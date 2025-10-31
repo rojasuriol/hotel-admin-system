@@ -5,6 +5,7 @@ import com.maryed.hotel_admin_system.habitacion.model.Habitacion;
 import com.maryed.hotel_admin_system.hotel.model.Hotel;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,7 +23,7 @@ public class ReservaRequestDTO {
     private LocalDateTime fechaEntrada;
     private LocalDateTime fechaSalida;
     private String tipoReserva;
-    private Double montoTotal;
+    private BigDecimal montoTotal;
     private String DNICliente;
     private String estado;  // D = DISPONIBLE , O = OCUPADO  y M = MANTENIMIENTO
 

@@ -8,6 +8,7 @@ import com.maryed.hotel_admin_system.hotel.dto.HotelResponseDTO;
 import com.maryed.hotel_admin_system.hotel.model.Hotel;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -26,6 +27,6 @@ public class ReservaResponseDTO {
     private LocalDateTime fechaEntrada;
     private LocalDateTime fechaSalida;
     private String tipoReserva;
-    private Double montoTotal;
+    private BigDecimal montoTotal;
     private String estadoReserva;
 }

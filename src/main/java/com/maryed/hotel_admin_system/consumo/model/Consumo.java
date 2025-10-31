@@ -36,7 +36,6 @@ public class Consumo {
     @Column(updatable = false)
     private LocalDateTime fechaConsumo;
 
-    // El subtotal es un campo calculado en la base de datos
     @Column(precision = 10, scale = 2, insertable = false, updatable = false)
     private BigDecimal subtotal;
 }

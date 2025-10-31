@@ -6,6 +6,7 @@ import com.maryed.hotel_admin_system.hotel.model.Hotel;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -45,7 +46,7 @@ public class Reserva {
     private String tipoReserva; // "POR_HORAS" o "POR_DIAS"
 
     @Column(name = "monto_total")
-    private Double montoTotal;
+    private BigDecimal montoTotal;
 
     @Column(name = "estado_reserva")
     private String estado; // "ACTIVA", "FINALIZADA", "CANCELADA"
