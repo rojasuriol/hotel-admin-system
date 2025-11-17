@@ -1,0 +1,134 @@
+-- Script de creación de base de datos hotel_db para MariaDB
+CREATE DATABASE IF NOT EXISTS hotel_db;
+USE hotel_db;
+
+-- Tabla hotel
+CREATE TABLE IF NOT EXISTS hotel (
+  id_hotel int NOT NULL AUTO_INCREMENT,
+  nombre_hotel varchar(100) NOT NULL,
+  direccion varchar(255) DEFAULT NULL,
+  telefono varchar(20) DEFAULT NULL,
+  email varchar(100) DEFAULT NULL,
+  PRIMARY KEY (id_hotel)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tabla cliente
+CREATE TABLE IF NOT EXISTS cliente (
+  id_cliente int NOT NULL AUTO_INCREMENT,
+  nombre varchar(100) DEFAULT NULL,
+  apellidos varchar(100) DEFAULT NULL,
+  dni varchar(15) NOT NULL,
+  tipo_cliente varchar(50) DEFAULT NULL,
+  telefono varchar(20) DEFAULT NULL,
+  PRIMARY KEY (id_cliente),
+  UNIQUE KEY dni (dni)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tabla habitacion
+CREATE TABLE IF NOT EXISTS habitacion (
+  id_habitacion int NOT NULL AUTO_INCREMENT,
+  id_hotel int DEFAULT NULL,
+  numero_habitacion varchar(10) NOT NULL,
+  tipo_habitacion varchar(50) DEFAULT NULL,
+  descripcion_habitacion text,
+  estado varchar(20) DEFAULT 'Disponible',
+  tiempo_reservado time DEFAULT NULL,
+  PRIMARY KEY (id_habitacion),
+  KEY idHotel (id_hotel),
+  CONSTRAINT habitacion_ibfk_1 FOREIGN KEY (id_hotel) REFERENCES hotel (id_hotel) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tabla usuario
+CREATE TABLE IF NOT EXISTS usuario (
+  idUsuario int NOT NULL AUTO_INCREMENT,
+  nombreUsuario varchar(50) NOT NULL,
+  contraseña varchar(255) NOT NULL,
+  rol varchar(50) DEFAULT NULL,
+  idHotel int DEFAULT NULL,
+  nombreCompleto varchar(100) DEFAULT NULL,
+  telefono varchar(20) DEFAULT NULL,
+  PRIMARY KEY (idUsuario),
+  UNIQUE KEY nombreUsuario (nombreUsuario),
+  KEY idHotel (idHotel),
+  CONSTRAINT usuario_ibfk_1 FOREIGN KEY (idHotel) REFERENCES hotel (id_hotel) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tabla reserva
+CREATE TABLE IF NOT EXISTS reserva (
+  id_reserva int NOT NULL AUTO_INCREMENT,
+  id_cliente int DEFAULT NULL,
+  id_habitacion int DEFAULT NULL,
+  id_hotel int DEFAULT NULL,
+  fecha_entrada datetime NOT NULL,
+  fecha_salida datetime DEFAULT NULL,
+  tipo_reserva varchar(50) DEFAULT NULL,
+  monto_total decimal(10,2) DEFAULT NULL,
+  estado_reserva varchar(50) DEFAULT 'Activa',
+  PRIMARY KEY (id_reserva),
+  KEY idCliente (id_cliente),
+  KEY idHabitacion (id_habitacion),
+  KEY fk_reserva_hotel (id_hotel),
+  CONSTRAINT fk_reserva_hotel FOREIGN KEY (id_hotel) REFERENCES hotel (id_hotel) ON DELETE SET NULL,
+  CONSTRAINT reserva_ibfk_1 FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente) ON DELETE SET NULL,
+  CONSTRAINT reserva_ibfk_2 FOREIGN KEY (id_habitacion) REFERENCES habitacion (id_habitacion) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tabla acompanante
+CREATE TABLE IF NOT EXISTS acompanante (
+  id_acompanante int NOT NULL AUTO_INCREMENT,
+  id_reserva int DEFAULT NULL,
+  dni varchar(15) NOT NULL,
+  PRIMARY KEY (id_acompanante),
+  KEY idReserva (id_reserva),
+  CONSTRAINT acompanante_ibfk_1 FOREIGN KEY (id_reserva) REFERENCES reserva (id_reserva) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tabla consumo
+CREATE TABLE IF NOT EXISTS consumo (
+  id_consumo int NOT NULL AUTO_INCREMENT,
+  id_reserva int DEFAULT NULL,
+  producto varchar(100) NOT NULL,
+  cantidad int DEFAULT 1,
+  precio_unitario decimal(10,2) DEFAULT NULL,
+  fecha_consumo datetime DEFAULT CURRENT_TIMESTAMP,
+  subtotal decimal(10,2) GENERATED ALWAYS AS (cantidad * precio_unitario) STORED,
+  PRIMARY KEY (id_consumo),
+  KEY idReserva (id_reserva),
+  CONSTRAINT consumo_ibfk_1 FOREIGN KEY (id_reserva) REFERENCES reserva (id_reserva) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tabla pago
+CREATE TABLE IF NOT EXISTS pago (
+  id_pago int NOT NULL AUTO_INCREMENT,
+  id_reserva int DEFAULT NULL,
+  monto decimal(10,2) NOT NULL,
+  metodo_pago varchar(50) DEFAULT NULL,
+  fecha_pago datetime DEFAULT CURRENT_TIMESTAMP,
+  estado_pago varchar(50) DEFAULT 'Pendiente',
+  PRIMARY KEY (id_pago),
+  KEY idReserva (id_reserva),
+  CONSTRAINT pago_ibfk_1 FOREIGN KEY (id_reserva) REFERENCES reserva (id_reserva) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Datos de prueba opcionales
+INSERT INTO hotel (nombre_hotel, direccion, telefono, email) VALUES
+('Hotel Plaza Central', 'Av. Principal 123', '+51 1 2345678', 'info@plazacentral.com'),
+('Hotel Costa del Sol', 'Calle Playa 456', '+51 1 8765432', 'reservas@costadelsol.com');
+
+INSERT INTO cliente (nombre, apellidos, dni, tipo_cliente, telefono) VALUES
+('Juan Carlos', 'Pérez García', '12345678', 'FRECUENTE', '+51 987654321'),
+('María Elena', 'López Silva', '87654321', 'OCASIONAL', '+51 987123456');
+
+INSERT INTO habitacion (id_hotel, numero_habitacion, tipo_habitacion, descripcion_habitacion, estado) VALUES
+(1, '101', 'INDIVIDUAL', 'Habitación individual con baño privado', 'Disponible'),
+(1, '102', 'DOBLE', 'Habitación doble con vista al mar', 'Disponible'),
+(2, '201', 'SUITE', 'Suite presidencial con jacuzzi', 'Disponible');
+
+INSERT INTO usuario (nombreUsuario, contraseña, rol, idHotel, nombreCompleto, telefono) VALUES
+('admin', 'admin123', 'ADMIN', 1, 'Administrador Principal', '+51 999888777'),
+('recepcion', 'recepcion123', 'RECEPCION', 1, 'Recepcionista Hotel', '+51 999777666');
+
+
+SELECT 'Base de datos hotel_db creada exitosamente en MariaDB con todas las tablas y relaciones' AS Mensaje;
+
+
